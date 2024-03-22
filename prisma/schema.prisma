@@ -1,10 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -20,13 +13,13 @@ model Account {
   type               String
   provider           String
   providerAccountId  String
-  refreshToken      String?  @db.Text @map("refresh_token")
-  accessToken      String?  @db.Text  @map("access_token")
-  expiresAt         Int?   @map("expires_at")
-  tokenType         String? @map("token_type")
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
   scope              String?
-  idToken           String?  @db.Text @map("id_token")
-  sessionState      String?  @map("session_state")
+  id_token           String?  @db.Text
+  session_state      String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
