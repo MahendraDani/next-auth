@@ -1,36 +1,18 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NextAuth
 
-## Getting Started
+> Why are the next-auth docs such a mess? They really need to step up.
 
-First, run the development server:
+This repo contains my learnings and use of next-auth. I know using kinde, clerk or any other service for that matter is easier but it's always better to have your app's authentication system in-house and next-auth gives you that! (At the cost of you getting overwhelmed by their confusing docs)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## What's done
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Authentication using _Email Provider_ with custom signin page and form (all power is in my hands now xd)
+2. Verify-request page when magic link request is send
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## TODO
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Error handling when email is not sent
+2. Zod validation in user input
+3. Client side error handling
+4. Role-based auth (I am really bored with doing this now! Really don't want to developer another platform man! But what can I do? Honor calls!)
+5. Play with more nextauth options
