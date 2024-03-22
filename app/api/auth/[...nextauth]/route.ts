@@ -4,8 +4,10 @@ import EmailProvider from "next-auth/providers/email";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import TestEmail from "@/emails/singin";
 import { resend } from "@/lib/resend";
+import MagicLinkEmail from "@/emails/magic-link";
+import { redirect } from "next/navigation";
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXT_PUBLIC_JWT_SECRET,
   providers: [
@@ -18,24 +20,23 @@ export const authOptions = {
           pass: process.env.EMAIL_SERVER_PASSWORD,
         },
       },
-      sendVerificationRequest({ identifier, url }) {
+      async sendVerificationRequest({ identifier, url }) {
         console.log(identifier);
         console.log(url);
 
         try {
-          resend.emails.send({
-            from: "Login <onboarding@resend.dev>",
-            to: [identifier],
-            subject: "Magic Link",
-            text: url,
-            react: TestEmail(),
-          });
+          if (process.env.NODE_ENV === "development") {
+            console.log(`Login Link: ${url}`);
+          } else {
+            await resend.emails.send({
+              to: [identifier],
+              from: `Magic Link <${process.env.EMAIL_FROM}>`,
+              subject: "Login Link",
+              react: MagicLinkEmail({ magicLink: url }),
+            });
+          }
         } catch (error) {
-          console.log("************************");
-          console.log(error);
-          console.log("************************");
-
-          throw new Error("There was some error in sending email");
+          throw new Error("Error sending error");
         }
       },
       from: process.env.EMAIL_FROM,
@@ -43,6 +44,7 @@ export const authOptions = {
   ],
   pages: {
     signIn: "/auth/login",
+    verifyRequest: "/auth/verify",
   },
   callbacks: {
     signIn(params) {
@@ -51,7 +53,7 @@ export const authOptions = {
     },
   },
   session: { strategy: "database" },
-} satisfies NextAuthOptions;
+};
 
 const handler = NextAuth(authOptions);
 
