@@ -1,8 +1,9 @@
 "use client";
 import { FormEvent, useState } from 'react';
 import Modal from './ui/modal';
-import loginUser from '@/actions/login-user';
 import Spinner from './ui/spinner';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 export const LoginForm = () => {
   const [open, setOpen] = useState(false);
@@ -29,14 +30,26 @@ export const LoginForm = () => {
 // NOTE: this component is important to mount and unmount dialog after each form submit and reset the saving state
 function Form({ afterSave }: { afterSave: () => void }) {
   const [saving, setSaving] = useState(false);
+  const router = useRouter();
 
   async function handleLoginForm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     setSaving(true);
 
+
     let formData = new FormData(e.currentTarget);
-    await loginUser(formData);
+    const email = formData.get("email");
+    // TODO : use zod validation first
+
+
+    // using next-auth signin function
+    const data = await signIn("email", {
+      email,
+      redirect: false,
+    });
+    console.log(data);
+    router.push(data?.url!);
     afterSave();
   }
 
@@ -49,7 +62,10 @@ function Form({ afterSave }: { afterSave: () => void }) {
         <div className="mt-[25px] flex w-full justify-center items-center">
           <button type='submit' className="w-full px-12 inline-flex h-[40px] items-center justify-center rounded-sm font-normal leading-none text-slate-200 bg-black/80 hover:bg-black/90 duration-150 ease-in group-disabled:pointer-events-none">
             <span className='group-disabled:hidden'>Login</span>
-            <Spinner className='w-6 h-6 group-enabled:hidden dark:text-slate-200 fill-purple-500' />
+            <div className='flex justify-center items-center gap-2 group-enabled:hidden'>
+              <Spinner className='w-6 h-6  dark:text-slate-200 fill-purple-500' />
+              <span>Loading...</span>
+            </div>
           </button>
         </div>
       </fieldset>

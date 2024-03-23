@@ -1,18 +1,22 @@
-import Image from "next/image";
 import { getServerSession } from "next-auth"
-import { authOptions } from "./api/auth/[...nextauth]/route";
 import { LoginForm } from "@/components/login-form";
-import Spinner from "@/components/ui/spinner";
+import { authOptions } from "@/lib/auth";
 
 export default async function Home() {
-  // const ses = await getServerSession(authOptions);
-  // console.log(ses);
+  const session = await getServerSession(authOptions);
   return (
     <main>
       <div className="flex justify-between items-center p-2">
         <div>Me</div>
         <LoginForm />
-
+      </div>
+      <div className="m-2">
+        {session ?
+          <pre>
+            {JSON.stringify(session, null, 2)}
+          </pre> :
+          <div className="text-red-400">You are not logged in.</div>
+        }
       </div>
     </main>
   );
