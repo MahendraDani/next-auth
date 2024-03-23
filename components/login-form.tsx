@@ -4,6 +4,7 @@ import Modal from './ui/modal';
 import Spinner from './ui/spinner';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import { z } from "zod";
 
 export const LoginForm = () => {
   const [open, setOpen] = useState(false);
@@ -32,6 +33,7 @@ function Form({ afterSave }: { afterSave: () => void }) {
   const [saving, setSaving] = useState(false);
   const router = useRouter();
 
+
   async function handleLoginForm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -40,12 +42,20 @@ function Form({ afterSave }: { afterSave: () => void }) {
 
     let formData = new FormData(e.currentTarget);
     const email = formData.get("email");
-    // TODO : use zod validation first
+    const emailSchema = z.object({
+      email: z.string().email({ message: "Please provide a valid email address" }).min(3)
+    })
 
-
+    const parsedEmail = emailSchema.safeParse({ email });
+    if (!parsedEmail.success) {
+      // TODO : add toast here
+      alert(parsedEmail.error.message);
+      afterSave();
+      return;
+    }
     // using next-auth signin function
     const data = await signIn("email", {
-      email,
+      email: parsedEmail.data.email,
       redirect: false,
     });
     console.log(data);
