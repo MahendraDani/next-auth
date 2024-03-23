@@ -1,39 +1,74 @@
 "use client";
+import { FormEvent, useState } from 'react';
 import Modal from './ui/modal';
+import loginUser from '@/actions/login-user';
 
-export const LoginForm = () => (
+export const LoginForm = () => {
+  const [open, setOpen] = useState(false);
+  return (
+    <Modal open={open} setOpen={setOpen} overlayClassNames='data-[state=open]:animate-[modal-overlay-open_200ms] data-[state=closed]:animate-[modal-overlay-close_200ms]'>
+      <Modal.Trigger>
+        Login
+      </Modal.Trigger>
+      <Modal.Content contentClassNames="data-[state=open]:animate-[modal-open_200ms] data-[state=closed]:animate-[modal-close_200ms]">
+        <Modal.Title>
+          <span>Login to your account</span>
+        </Modal.Title>
+        <Modal.Description>
+          <span>No need to remember long passwords anymore, magiclinks!</span>
+        </Modal.Description>
+        <Form afterSave={() => { setOpen(false) }} />
+      </Modal.Content>
+    </Modal>
+  )
+}
 
-  <Modal overlayClassNames='data-[state=open]:animate-[modal-overlay-open_200ms] data-[state=closed]:animate-[modal-overlay-close_200ms]'>
-    <Modal.Trigger>
-      Login
-    </Modal.Trigger>
-    <Modal.Content contentClassNames="data-[state=open]:animate-[modal-open_200ms] data-[state=closed]:animate-[modal-close_200ms]">
-      <Modal.Title>
-        <p>Login to your account</p>
-      </Modal.Title>
-      <Modal.Description>
-        <p>No need to remember long passwords anymore, magiclinks!</p>
-      </Modal.Description>
-      <form>
-        <fieldset className="flex flex-col items-start gap-1 text-black/70">
-          <label className="" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="w-full h-[40px] focus:text-black inline-flex items-center justify-center rounded-md px-2 border-[1.5px] border-slate-400/70 focus:outline-none focus:border-slate-400"
-            placeholder="Pedro Duarte"
-          />
-        </fieldset>
-        <div className="mt-[25px] flex w-full justify-center items-center">
-          <Modal.Close asChild>
-            <button className="w-full px-12 inline-flex h-[40px] items-center justify-center rounded-sm font-normal leading-none text-slate-200 bg-black/80 hover:bg-black/90 duration-150 ease-in">
-              Login
-            </button>
-          </Modal.Close>
+
+// All form submit logic should be hanlded in the beloew component
+// NOTE: this component is important to mount and unmount dialog after each form submit and reset the saving state
+function Form({ afterSave }: { afterSave: () => void }) {
+  const [saving, setSaving] = useState(false);
+
+  async function handleLoginForm(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    setSaving(true);
+
+    let formData = new FormData(e.currentTarget);
+    await loginUser(formData);
+    afterSave();
+  }
+
+  return (
+    <form onSubmit={handleLoginForm}>
+      <fieldset disabled={saving} className="group flex flex-col items-start gap-1 text-black/70">
+        <div className='w-full group-disabled:opacity-50'>
+          <FormFields />
         </div>
-      </form>
-    </Modal.Content>
-  </Modal>
+        <div className="mt-[25px] flex w-full justify-center items-center">
+          <button type='submit' className="w-full px-12 inline-flex h-[40px] items-center justify-center rounded-sm font-normal leading-none text-slate-200 bg-black/80 hover:bg-black/90 duration-150 ease-in group-disabled:pointer-events-none">
+            <span className='group-disabled:hidden'>Login</span>
+            <span className='group-enabled:hidden'>Loading...</span>
+          </button>
+        </div>
+      </fieldset>
+    </form>
+  )
+}
 
-);
+// Should contain all form fields in a form
+function FormFields() {
+  return (
+    <>
+      <label className="" htmlFor="email">
+        Email
+      </label>
+      <input
+        className="w-full h-[40px] focus:text-black inline-flex items-center justify-center rounded-md px-2 border-[1.5px] border-slate-400/70 focus:outline-none focus:border-slate-400"
+        placeholder="Pedro Duarte"
+        name='email'
+      />
+    </>
+  )
+}
 

@@ -5,7 +5,7 @@ import React, { ReactNode } from 'react';
 
 export default function Modal({ children, open, setOpen, overlayClassNames }: { children: ReactNode, open?: boolean, setOpen?: (open: boolean) => void, overlayClassNames?: string }) {
   return (
-    <Dialog.Root>
+    <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Overlay className={cn("bg-black/50 fixed inset-0", overlayClassNames)} />
       {children}
     </Dialog.Root >
