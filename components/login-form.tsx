@@ -50,7 +50,7 @@ function Form({ afterSave }: { afterSave: () => void }) {
     const parsedEmail = emailSchema.safeParse({ email });
     if (!parsedEmail.success) {
       toast.error(parsedEmail.error["errors"][0].message)
-      afterSave();
+      setSaving(false);
       return;
     }
 
