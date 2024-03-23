@@ -5,6 +5,7 @@ import Spinner from './ui/spinner';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { z } from "zod";
+import { toast } from "sonner"
 
 export const LoginForm = () => {
   const [open, setOpen] = useState(false);
@@ -43,22 +44,23 @@ function Form({ afterSave }: { afterSave: () => void }) {
     let formData = new FormData(e.currentTarget);
     const email = formData.get("email");
     const emailSchema = z.object({
-      email: z.string().email({ message: "Please provide a valid email address" }).min(3)
+      email: z.string().email({ message: "Please provide a valid email address" })
     })
 
     const parsedEmail = emailSchema.safeParse({ email });
     if (!parsedEmail.success) {
-      // TODO : add toast here
-      alert(parsedEmail.error.message);
+      toast.error(parsedEmail.error["errors"][0].message)
       afterSave();
       return;
     }
+
     // using next-auth signin function
     const data = await signIn("email", {
       email: parsedEmail.data.email,
       redirect: false,
     });
     console.log(data);
+    toast.success("Please check your email for magic link!")
     router.push(data?.url!);
     afterSave();
   }
