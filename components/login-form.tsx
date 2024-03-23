@@ -2,6 +2,7 @@
 import { FormEvent, useState } from 'react';
 import Modal from './ui/modal';
 import loginUser from '@/actions/login-user';
+import Spinner from './ui/spinner';
 
 export const LoginForm = () => {
   const [open, setOpen] = useState(false);
@@ -48,7 +49,7 @@ function Form({ afterSave }: { afterSave: () => void }) {
         <div className="mt-[25px] flex w-full justify-center items-center">
           <button type='submit' className="w-full px-12 inline-flex h-[40px] items-center justify-center rounded-sm font-normal leading-none text-slate-200 bg-black/80 hover:bg-black/90 duration-150 ease-in group-disabled:pointer-events-none">
             <span className='group-disabled:hidden'>Login</span>
-            <span className='group-enabled:hidden'>Loading...</span>
+            <Spinner className='w-6 h-6 group-enabled:hidden dark:text-slate-200 fill-purple-500' />
           </button>
         </div>
       </fieldset>
