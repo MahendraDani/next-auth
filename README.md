@@ -14,7 +14,7 @@ This repo contains my learnings and use of next-auth. I know using kinde, clerk 
 
 ## Demo
 
-[Demo Video](/public/videos/level1.mov)
+![Demo Video](https://github.com/MahendraDani/next-auth/assets/116940083/891d5080-ef33-497f-be19-00b6b4515687)
 
 ## TODO
 
