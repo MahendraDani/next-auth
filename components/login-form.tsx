@@ -3,11 +3,11 @@ import Modal from './ui/modal';
 
 export const LoginForm = () => (
 
-  <Modal>
+  <Modal overlayClassNames='data-[state=open]:animate-[modal-overlay-open_200ms] data-[state=closed]:animate-[modal-overlay-close_200ms]'>
     <Modal.Trigger>
       Login
     </Modal.Trigger>
-    <Modal.Content>
+    <Modal.Content contentClassNames="data-[state=open]:animate-[modal-open_200ms] data-[state=closed]:animate-[modal-close_200ms]">
       <Modal.Title>
         <p>Login to your account</p>
       </Modal.Title>
