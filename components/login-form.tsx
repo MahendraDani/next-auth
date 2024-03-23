@@ -5,14 +5,14 @@ export const LoginForm = () => (
 
   <Modal>
     <Modal.Trigger>
-      <button>Login</button>
+      Login
     </Modal.Trigger>
     <Modal.Content>
       <Modal.Title>
-        Login to your account
+        <p>Login to your account</p>
       </Modal.Title>
       <Modal.Description>
-        No need to remember long passwords anymore, magiclinks!
+        <p>No need to remember long passwords anymore, magiclinks!</p>
       </Modal.Description>
       <form>
         <fieldset className="flex flex-col items-start gap-1 text-black/70">
