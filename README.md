@@ -6,13 +6,18 @@ This repo contains my learnings and use of next-auth. I know using kinde, clerk 
 
 ## What's done
 
-1. Authentication using _Email Provider_ with custom signin page and form (all power is in my hands now xd)
-2. Verify-request page when magic link request is send
+1. Authentication using _Email Provider_ with custom signin form (all power is in my hands now xd)
+2. Verify-request page when magic link request is send.
+3. Resuable components using Radix UI (following best practices)
+4. Input validation using zod
+5. Loading states and toasts included for better UX
+
+## Demo
+
+![Demo Video](https://github.com/MahendraDani/next-auth/assets/116940083/891d5080-ef33-497f-be19-00b6b4515687)
 
 ## TODO
 
 1. Error handling when email is not sent
-2. Zod validation in user input
-3. Client side error handling
-4. Role-based auth (I am really bored with doing this now! Really don't want to developer another platform man! But what can I do? Honor calls!)
-5. Play with more nextauth options
+2. Role-based auth (I am really bored with doing this now! Really don't want to developer another platform man! But what can I do? Honor calls!)
+3. Play with more nextauth options
